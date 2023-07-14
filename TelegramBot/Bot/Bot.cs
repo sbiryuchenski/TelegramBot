@@ -46,8 +46,8 @@ namespace TelegramBot.Bot
 
             if (message.Text != null)
             {
+                await Console.Out.WriteLineAsync($"{message.Chat.Id}|{message.Chat.Username}|{message.Text}");
                 BotResponse answer = menuMapper.GetAnswer(message, botClient);
-                BaseDialog.SendMessageToUser(botClient, message.Chat.Id, $"Сообщение от пользователя {message.Chat.Username} | {message.Text}"/*, null*/);
             }
         }
 
