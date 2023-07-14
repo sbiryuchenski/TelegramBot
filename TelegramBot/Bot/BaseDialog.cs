@@ -10,7 +10,7 @@ using TelegramBot.Models;
 
 namespace TelegramBot.Bot
 {
-    class BaseDialog
+    public class BaseDialog
     {
         public static async void SendMessageToUser(ITelegramBotClient botClient, long id, string message/*, IReplyMarkup buttons*/)
         {
@@ -19,8 +19,12 @@ namespace TelegramBot.Bot
 
         public virtual BotResponse GetAnswer(Message message)
         {
-            return new BotResponse("Возникала ошибка. Просьба обратиться к разработчику и дать ему пизды.", BotButtons.GetButtons());
+            return new BotResponse("Возникала ошибка. Просьба обратиться к разработчику и дать ему пизды.", BotButtons.GetButtons(Common.ButtonKit.MainMenu));
         }
 
+        public BotResponse GetError()
+        {
+            return new BotResponse("Придурок ты ёбаный, нормальные значения вводи", BotButtons.GetButtons(Common.ButtonKit.MainMenu));
+        }
     }
 }

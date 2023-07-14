@@ -46,9 +46,8 @@ namespace TelegramBot.Bot
 
             if (message.Text != null)
             {
-                menuMapper.GetAnswer(message);
-                MainMenu.SendMessageToUser(botClient, message.Chat.Id, $"Сообщение от пользователя {message.Chat.Username} | {message.Text}"/*, null*/);
-
+                BotResponse answer = menuMapper.GetAnswer(message, botClient);
+                BaseDialog.SendMessageToUser(botClient, message.Chat.Id, $"Сообщение от пользователя {message.Chat.Username} | {message.Text}"/*, null*/);
             }
         }
 

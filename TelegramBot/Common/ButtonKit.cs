@@ -8,6 +8,6 @@ namespace TelegramBot.Common
 {
     public enum ButtonKit
     {
-        MainMenu, UserList
+        MainMenu, UserList, Back
     }
 }

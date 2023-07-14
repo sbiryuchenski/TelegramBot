@@ -22,6 +22,9 @@ namespace TelegramBot.Bot
                 case ButtonKit.UserList:
                     keyboard = GetUsersButtons();
                     break;
+                case ButtonKit.Back:
+                    keyboard = GetBackButton();
+                    break;
             }
             try
             {
@@ -54,6 +57,14 @@ namespace TelegramBot.Bot
                     keyboard[keyboard.Count].Add(new KeyboardButton(users[i]));
             }
             var k = new ReplyKeyboardMarkup(keyboard);
+            k.ResizeKeyboard = true;
+            return k;
+        }
+        private static IReplyMarkup GetBackButton()
+        {
+            var k = new ReplyKeyboardMarkup(new List<List<KeyboardButton>> { new List<KeyboardButton> { new KeyboardButton("Назад") } })
+            {
+            };
             k.ResizeKeyboard = true;
             return k;
         }

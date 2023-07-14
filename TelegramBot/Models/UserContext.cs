@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TelegramBot.Bot
 {
-    class UserContext
+    public class UserContext
     {
         public long SenderId { get; set; } = 0;
         public long RecieverId { get; set; } = 0;

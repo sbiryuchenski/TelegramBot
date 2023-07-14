@@ -5,58 +5,57 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Telegram.Bot;
 using Telegram.Bot.Types;
 using TelegramBot.Models;
 
 namespace TelegramBot.Bot
 {
-    class MenuMapper
+    public class MenuMapper
     {
-        static List<UserContext> activeUsers;
+        public static List<UserContext> ActiveUsers;
         MainMenu mainMenu;
-
+        SelectUserMenu selectUserMenu;
+        MessageSender messageSender;
         public MenuMapper()
         {
             mainMenu = new MainMenu();
-            activeUsers = new List<UserContext>();
+            selectUserMenu = new SelectUserMenu();
+            messageSender = new MessageSender();
+            ActiveUsers = new List<UserContext>();
         }
 
-        public BotResponse GetAnswer(Message message)
+        public BotResponse GetAnswer(Message message, ITelegramBotClient botClient)
         {
-            string answer = "";
-            var auser = activeUsers.Select(_ => _).Where(_ => _.SenderId == message.Chat.Id).FirstOrDefault();
-            if (auser == null)
-            {
-                mainMenu.GetAnswer(message);
+            var user = ActiveUsers.Where(_ => _.SenderId == message.Chat.Id).FirstOrDefault();
+            string mes = message.Text.ToLower();
+            BotResponse answer = new();
 
-                activeUsers.Add(auser);
-                auser = new UserContext();
-                auser.SenderId = message.Chat.Id;
+            if (user == null)
+            {
+
+                answer = mainMenu.GetAnswer(message);
             }
             else
             {
-                if (auser.RecieverId == 0)
+                if (user.SenderId != 0 && user.RecieverId == 0)
                 {
-                    try
-                    {
-                        Int64.TryParse(message.Text, out var reciever);
-                        auser.RecieverId = Convert.ToInt64(message.Text);
-                    }
-                    catch
-                    {
-                        answer = "Еблан тупой блять";
-                    }
+                    selectUserMenu.GetAnswer(message);
                 }
                 else
                 {
-
+                    if(user.RecieverId != 0)
+                    {
+                        messageSender.SendMessageToUser(botClient, message, user);
+                    }
                 }
+                answer = mainMenu.GetError();
             }
-            string mes = message.Text.ToLower();
+
             switch (mes)
             {
                 case "отправить сообщение":
-                    mainMenu.GetAnswer(message);
+                    
                     break;
                 case "пойти нахуй":
                     mainMenu.GetAnswer(message);
