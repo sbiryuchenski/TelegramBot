@@ -47,14 +47,17 @@ namespace TelegramBot.Bot
         {
             var users = DBase.GetUsers().Select(_ => _.UserName).ToList();
             var uRow = new List<KeyboardButton>();
-            var keyboard = new List<List<KeyboardButton>>();
+            var keyboard = new List<List<KeyboardButton>>
+            {
+                new List<KeyboardButton>()
+};
             for (int i = 0; i < users.Count; i++)
             {
                 if (i % 5 == 4)
                 {
                     keyboard.Add(new List<KeyboardButton>());
                 }
-                    keyboard[keyboard.Count].Add(new KeyboardButton(users[i]));
+                    keyboard[keyboard.Count-1].Add(new KeyboardButton(users[i].TrimEnd()));
             }
             var k = new ReplyKeyboardMarkup(keyboard);
             k.ResizeKeyboard = true;

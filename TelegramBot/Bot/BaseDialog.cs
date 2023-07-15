@@ -14,7 +14,7 @@ namespace TelegramBot.Bot
     {
         public static async void SendMessageToUser(ITelegramBotClient botClient, long id, string message/*, IReplyMarkup buttons*/)
         {
-            await botClient.SendTextMessageAsync(id, message/* replyMarkup: buttons*/);
+            await botClient.SendTextMessageAsync(id, message, replyMarkup: BotButtons.GetButtons(Common.ButtonKit.MainMenu));
         }
 
         public virtual BotResponse GetAnswer(Message message)
@@ -24,7 +24,7 @@ namespace TelegramBot.Bot
 
         public BotResponse GetError()
         {
-            return new BotResponse("Придурок ты ёбаный, нормальные значения вводи", BotButtons.GetButtons(Common.ButtonKit.MainMenu));
+            return new BotResponse("Придурок ты ёбаный, нормальные значения вводи", BotButtons.GetButtons(Common.ButtonKit.UserList));
         }
     }
 }

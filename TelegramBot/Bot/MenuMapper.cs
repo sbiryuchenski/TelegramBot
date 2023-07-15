@@ -27,29 +27,30 @@ namespace TelegramBot.Bot
 
         public BotResponse GetAnswer(Message message, ITelegramBotClient botClient)
         {
-            var user = ActiveUsers.Where(_ => _.SenderId == message.Chat.Id).FirstOrDefault();
+            UserContext user = null;
+            try { user = ActiveUsers.Where(_ => _.SenderId == message.Chat.Id).FirstOrDefault(); }
+            catch {  }
             string mes = message.Text.ToLower();
             BotResponse answer = new();
 
             if (user == null)
             {
-
                 answer = mainMenu.GetAnswer(message);
             }
             else
             {
                 if (user.SenderId != 0 && user.RecieverId == 0)
                 {
-                    selectUserMenu.GetAnswer(message);
+                   answer = selectUserMenu.GetAnswer(message);
                 }
                 else
                 {
                     if(user.RecieverId != 0)
                     {
-                        messageSender.SendMessageToUser(botClient, message, user);
+                        answer = messageSender.SendMessageToUser(botClient, message, user);
                     }
                 }
-                answer = mainMenu.GetError();
+                //answer = mainMenu.GetError();
             }
 
             switch (mes)
@@ -62,7 +63,7 @@ namespace TelegramBot.Bot
                     break;
             }
 
-            return null;
+            return answer;
         }
     }
 }

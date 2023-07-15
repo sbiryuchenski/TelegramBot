@@ -25,8 +25,12 @@ namespace TelegramBot.Bot
                 case "назад":
                     answer = Back(message);
                     break;
+                case "/reg":
+                    answer = RegisterUser.Register(new Models.User(message.Chat.Id, message.Chat.Username, message.Chat.FirstName, message.Chat.LastName));
+                    break;
                 default:
                     answer.Message = "Это замечательно, что ты умеешь печатать, но нажми пожалуйста на кнопочку, долбоёб.";
+                    answer.Buttons = BotButtons.GetButtons(Common.ButtonKit.MainMenu);
                     break;
             }
             return answer;
@@ -36,9 +40,10 @@ namespace TelegramBot.Bot
             var auser = MenuMapper.ActiveUsers.Select(_ => _).Where(_ => _.SenderId == message.Chat.Id).FirstOrDefault();
             if (auser == null)
             {
-                MenuMapper.ActiveUsers.Add(auser);
                 auser = new UserContext();
                 auser.SenderId = message.Chat.Id;
+                MenuMapper.ActiveUsers.Add(auser);
+
             }
 
             BotResponse answer = new();

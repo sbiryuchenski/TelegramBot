@@ -13,10 +13,20 @@ namespace TelegramBot.Bot
     {
         public BotResponse SendMessageToUser(ITelegramBotClient botClient, Message message, UserContext user)
         {
-            SendMessageToUser(botClient, user.RecieverId, $"Сообщение от пользователя {message.Chat.Username} | {message.Text}"/*, null*/);
             BotResponse answer = new BotResponse();
             answer.Message = "Сообщение отправлено!";
             answer.Buttons = BotButtons.GetButtons(Common.ButtonKit.MainMenu);
+
+            if (message.Text.ToLower() == "назад")
+            {
+                answer.Message = "Что ж ты фраер сдал назад";
+                MenuMapper.ActiveUsers.Remove(MenuMapper.ActiveUsers.Where(_ => _.SenderId == message.Chat.Id).First());
+            }
+            else
+            {
+                SendMessageToUser(botClient, user.RecieverId, $"Сообщение от пользователя {message.Chat.Username} | {message.Text}"/*, null*/);
+                MenuMapper.ActiveUsers.Remove(MenuMapper.ActiveUsers.Where(_ => _.SenderId == message.Chat.Id).First());
+            }
             return answer;
         }
     }

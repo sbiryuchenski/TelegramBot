@@ -43,11 +43,14 @@ namespace TelegramBot.Bot
         private async static Task Update(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken) // Асинхронное взаимодействие с ботом
         {
             var message = update.Message;
-
-            if (message.Text != null)
+            if (true)
             {
-                await Console.Out.WriteLineAsync($"{message.Chat.Id}|{message.Chat.Username}|{message.Text}");
-                BotResponse answer = menuMapper.GetAnswer(message, botClient);
+                if (message.Text != null)
+                {
+                    await Console.Out.WriteLineAsync($"{message.Chat.Id}|{message.Chat.Username}|{message.Text}");
+                    BotResponse answer = menuMapper.GetAnswer(message, botClient);
+                    await botClient.SendTextMessageAsync(message.Chat.Id, answer.Message, replyMarkup: answer.Buttons);
+                }
             }
         }
 
