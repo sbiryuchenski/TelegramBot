@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using TelegramBot.DataBase;
 using TelegramBot.Models;
 
 namespace TelegramBot.Bot
@@ -24,7 +25,7 @@ namespace TelegramBot.Bot
             }
             else
             {
-                SendMessageToUser(botClient, user.RecieverId, $"Сообщение от пользователя {message.Chat.Username} | {message.Text}"/*, null*/);
+                SendMessageToUser(botClient, user.RecieverId, $"Сообщение от пользователя {DBase.GetUsers().Where(_=>_.UserId == message.Chat.Id).Select(_=>_.UserName).First().TrimEnd()} | {message.Text}"/*, null*/);
                 MenuMapper.ActiveUsers.Remove(MenuMapper.ActiveUsers.Where(_ => _.SenderId == message.Chat.Id).First());
             }
             return answer;

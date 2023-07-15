@@ -26,7 +26,7 @@ namespace TelegramBot.Bot
                     answer = Back(message);
                     break;
                 case "/reg":
-                    answer = RegisterUser.Register(new Models.User(message.Chat.Id, message.Chat.Username, message.Chat.FirstName, message.Chat.LastName));
+                    answer = RegisterUser.Register(new Models.User(message.Chat.Id, message.Chat.Username == null ? message.Chat.FirstName:message.Chat.Username, message.Chat.FirstName, message.Chat.LastName));
                     break;
                 default:
                     answer.Message = "Это замечательно, что ты умеешь печатать, но нажми пожалуйста на кнопочку, долбоёб.";
